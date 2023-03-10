@@ -153,37 +153,15 @@ def save_file(request):
 
             scatter2 = px.scatter(df,x= df.columns.tolist()[2], y=df.columns.tolist()[-1],opacity=0.65)
 
-            scatter2.add_traces(go.Scatter(x=np.linspace(model.get_X().min(), model.get_X().max(), 100), y= model.predict(model.get_X()), name='Regression Fit'))
+            # scatter2.add_traces(go.Scatter(x=np.linspace(model.get_X().min(), model.get_X().max(), 100), y= model.predict(model.get_X()), name='Regression Fit'))
             graphscat2 = plot(scatter2, output_type='div')
-
-            #colors = ['Positive' if c > 0 else 'Negative' for c in model.get_model().coef_.all()]
-            colors = []
-            for c in range(len(model.get_model().coef_)):
-                print(c)
-                if c > 0:
-                    colors.append('Positive')
-                else:
-                    colors.append('Negative')
-
-            #colors = ['Positive' if c > 0 else 'Negative' for c in model.get_model().coef_]
-            #print("colors =",colors)
-            
-            """
-            figmo = px.bar(
-                x=model.get_X().columns, y=model.get_model().coef_, color=colors,
-                color_discrete_sequence=['red', 'blue'],
-                labels=dict(x='Feature', y='Linear coefficient'),
-                title='Weight of each feature for predicting petal width'
-            )
-            grapheat = plot(figmo, output_type='div')
-            """
 
             context = {
                 "score":score,
                 "reg_plot":graphbox,
                 "reg_scat": graphscat,
                 "reg_scat1": graphscat1,
-                #"reg_scat2": figmo,
+                "reg_scat2": graphscat2,
             }
             
     else:
