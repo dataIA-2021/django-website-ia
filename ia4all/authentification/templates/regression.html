@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <title>Regression</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"0>
+</head>
+<body>
+
+{% include 'menu.html' %}
+
+<div class="container">
+    
+    <h1>Bienvenue {{ request.user.username }} !<br/><br/>
+        Vous êtes sur la page régression
+    </h1>
+
+    <h2>La target doit être la dernière colonne</h2>
+
+    <form method="post" enctype="multipart/form-data" action="{% url 'save_file' %}">
+        {% csrf_token %}
+        <label for="fichier_csv">Choose file to upload</label>
+        <input
+            type="file" name="fichier_csv" id="fichier_csv"
+            accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
+            <br/>
+            <div class="dropdown">
+                <label for="inputState">Choisissez un modèle de régression</label>
+                <select id="inputState" class="form-control" id="choice_model" name="choice_model">
+                    <option selected>LinearRegression</option>
+                    <option>KNN</option>
+                    <option>DecisionTreeRegressor</option>
+                </select>
+            </div>
+            <br/>
+        <button type="submit">Envoyer</button>
+        <br/>
+    </form>
+    <br/>
+
+    <h3>Score du modèle : </h3>
+    {{ score }}
+    <br/>
+
+    <button data-toggle="collapse" data-target="#demo" class="btn btn-primary">Afficher/cacher les graphiques</button>
+    <div id="demo" class="collapse">
+        <div class="row">
+            <div class="col-sm-12">
+                {% autoescape off %}
+                {{ reg_plot }}
+                {% endautoescape %}
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+</div>
+</body>
+</html>
