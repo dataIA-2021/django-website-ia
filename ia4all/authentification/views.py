@@ -63,8 +63,8 @@ def inscription(request):
     if request.method == "POST":
         if request.POST["motdepasse1"] == request.POST["motdepasse2"]:
             modelUtilisaleur = get_user_model()
-            identifiant = request.POST["identifiant"]
-            motdepasse = request.POST["motdepasse1"]
+            identifiant = request.POST.get("identifiant")
+            motdepasse = request.POST.get("motdepasse1")
             utilisateur = modelUtilisaleur.objects.create_user(username=identifiant,
                                                        password=motdepasse)
             return redirect("connexion")
@@ -79,8 +79,8 @@ def connexion(request):
     # submit
     message = ""
     if request.method == "POST":
-        identifiant = request.POST["identifiant"]
-        motdepasse = request.POST["motdepasse"]
+        identifiant = request.POST.get("identifiant")
+        motdepasse = request.POST.get("motdepasse")
         utilisateur = authenticate(username = identifiant,
                                    password = motdepasse)
         if utilisateur is not None:
@@ -140,8 +140,50 @@ def save_file(request):
             choice_model = request.POST.get('choice_model')
             model = Model(file_path,choice_model)
             score = model.get_score()
+            df = model.get_df()
+            
+            figbox = px.box(df, y=df.columns.tolist()[-1], title="Boîte à moustache")
+            graphbox = plot(figbox, output_type='div')
+
+            scatter = px.scatter(df,x= df.columns.tolist()[0], y=df.columns.tolist()[-1],opacity=0.65)
+            graphscat = plot(scatter, output_type='div')
+
+            scatter1 = px.scatter(df,x= df.columns.tolist()[1], y=df.columns.tolist()[-1],opacity=0.65)
+            graphscat1 = plot(scatter1, output_type='div')
+
+            scatter2 = px.scatter(df,x= df.columns.tolist()[2], y=df.columns.tolist()[-1],opacity=0.65)
+
+            scatter2.add_traces(go.Scatter(x=np.linspace(model.get_X().min(), model.get_X().max(), 100), y= model.predict(model.get_X()), name='Regression Fit'))
+            graphscat2 = plot(scatter2, output_type='div')
+
+            #colors = ['Positive' if c > 0 else 'Negative' for c in model.get_model().coef_.all()]
+            colors = []
+            for c in range(len(model.get_model().coef_)):
+                print(c)
+                if c > 0:
+                    colors.append('Positive')
+                else:
+                    colors.append('Negative')
+
+            #colors = ['Positive' if c > 0 else 'Negative' for c in model.get_model().coef_]
+            #print("colors =",colors)
+            
+            """
+            figmo = px.bar(
+                x=model.get_X().columns, y=model.get_model().coef_, color=colors,
+                color_discrete_sequence=['red', 'blue'],
+                labels=dict(x='Feature', y='Linear coefficient'),
+                title='Weight of each feature for predicting petal width'
+            )
+            grapheat = plot(figmo, output_type='div')
+            """
+
             context = {
-                "score":score
+                "score":score,
+                "reg_plot":graphbox,
+                "reg_scat": graphscat,
+                "reg_scat1": graphscat1,
+                #"reg_scat2": figmo,
             }
             
     else:
@@ -150,3 +192,9 @@ def save_file(request):
         }
     
     return render(request,"regression.html",context)
+
+def classification(request):
+    return render(request,"classification.html")
+
+def clustering(request):
+    return render(request,"clustering.html")

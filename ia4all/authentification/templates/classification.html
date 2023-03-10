@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <title>Regression</title>
+    <title>Classification</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"0>
@@ -13,7 +13,7 @@
 <div class="container">
     
     <h1>Bienvenue {{ request.user.username }} !<br/><br/>
-        Vous êtes sur la page régression
+        Vous êtes sur la page classification.
     </h1>
 
     <h2>La target doit être la dernière colonne</h2>
@@ -28,9 +28,9 @@
             <div class="dropdown">
                 <label for="inputState">Choisissez un modèle de régression</label>
                 <select id="inputState" class="form-control" id="choice_model" name="choice_model">
-                    <option selected>LinearRegression</option>
+                    <option selected>RandomForest</option>
                     <option>KNN</option>
-                    <option>DecisionTreeRegressor</option>
+                    <option>SVM</option>
                 </select>
             </div>
             <br/>

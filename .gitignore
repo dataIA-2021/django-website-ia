@@ -1,1 +1,7 @@
 env
+__pycache__/
+*.py[cod]
+
+git rm -r --cached .
+git add .
+git commit -m "Enlever les fichiers pycache de Git"

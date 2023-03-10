@@ -26,5 +26,7 @@ urlpatterns = [
     path("suppression/<int:id>", suppression, name="suppression"),
     path("regression", regression, name="regression"),
     path("training_model", training_model, name="training_model"),
-    path("save_file", save_file, name="save_file")
+    path("save_file", save_file, name="save_file"),
+    path("classification", classification, name="classification"),
+    path("clustering", clustering, name="clustering")
 ]
